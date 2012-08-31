@@ -180,15 +180,17 @@ function waitForCouch(fullDomain, callback) {
   async.whilst(
         function () {return couchNotUp;},
         function (callback) {
-            checkExistenceOf('http://' + fullDomain, function(err, status){
-                var now = new Date().getTime();
-                var elapsed = now - start;
-                if (elapsed > 20000) callback('Timeout, waiting for couch');
-                console.log(status);
-                if (status && status === 200 ) couchNotUp = false;
-                // prob should be kind and do a settimeout
-                callback();
-            });
+            setTimeout(function(){
+                checkExistenceOf('http://' + fullDomain, function(err, status){
+                    var now = new Date().getTime();
+                    var elapsed = now - start;
+                    if (elapsed > 20000) callback('Timeout, waiting for couch');
+                    console.log(err, resp);
+                    if (resp && resp.statusCode === 200 ) couchNotUp = false;
+                    // prob should be kind and do a settimeout
+                    callback();
+                });
+            }, 300);
         },
         function (err) {
             callback(err);
@@ -340,11 +342,10 @@ function replicate(couch, source, target, ddoc, callback) {
 
 function checkExistenceOf(url, callback) {
   console.log('check existance', url);
-  // some more error safety
   try {
-  request({uri: url, method: "HEAD", json: false}, function(err, resp, body) {
-     callback(err, resp.statusCode);
-  })
+       http.get(url, function(resp) {
+          callback(null, resp);
+       }).on('error', callback);
   } catch(e) { callback(e) }
 }
 
