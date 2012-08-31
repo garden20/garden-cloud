@@ -181,7 +181,7 @@ function waitForCouch(fullDomain, callback) {
         function () {return couchNotUp;},
         function (callback) {
             setTimeout(function(){
-                checkExistenceOf('http://' + fullDomain, function(err, status){
+                checkExistenceOf('http://' + fullDomain, function(err, resp){
                     var now = new Date().getTime();
                     var elapsed = now - start;
                     if (elapsed > 20000) callback('Timeout, waiting for couch');
