@@ -1,5 +1,4 @@
-
-    <div class="container" role="main">
+<div class="container" role="main" xmlns="http://www.w3.org/1999/html">
 
 
         <div class="row jumbotron">
@@ -8,7 +7,7 @@
                     <img class="banner" src="static/img/garden20-jumbotron.png" />
                 </div>
 
-                <h3 class="lead">Html5 apps that are easy to install, are decentralized, and keep data in sync across devices.</h3>
+                <h3 class="lead">A <span class="brand-colour">garden</span> runs apps that are easy to install with offline and multi-device sync.</h3>
             </div>
         </div>
         <div class="row">
@@ -16,145 +15,29 @@
 
             </div>
         </div>
-        <div class="row">
-            <div class="span3">
-                <img src="static/img/garden-market.png" class="pull-left"/>
-                <p>Choose apps from many different Garden Markets.</p>
-            </div>
+        <div class="row features">
             <div class="span3">
                 <img src="static/img/platforms/platforms.png" class="pull-left" />
-                <p>Install the apps on your platforms.</p>
+                <p>A garden can be planted on many different platforms.</p>
             </div>
             <div class="span3">
-                <div style="font-size: 70px;">
-                  <i class="icon-refresh"></i>
-                </div>
-                <p>Sync your apps locally to Win/MacOS/Linux and iOS/Android.</p>
+                <img src="static/img/garden-market.png" class="pull-left"/>
+                <p>Pick apps for your garden from many different Garden Markets.</p>
             </div>
+
             <div class="span3">
-                <p>Manage apps and users from the dashboard interface.</p>
+                <img src="static/img/garden-sync.png" class="pull-left" />
+                <p>Sync your gardens between each other for up to date data.</p>
             </div>
         </div>
+        <div class="row well well-large call-to-action">
 
-        <div class="row fold">
-            <div class="offset1 span8">
-                <div class="alert alert-info  install-message" style="display: none;">
-                  <img src="static/img/download.png" alt="download" />
-                  <p><b>Sign up</b>, or <b>Login</b> and then you can <b>install</b> the app from <span></span></p>
-                </div>
-            </div>
-
-            <div class="main span6">
-
-
-
-                <ul class="nav tabs">
-                  <li class="active"><a href="#signupTab" data-toggle="tab">Sign Up</a></li>
-                  <li><a href="#learnMoreTab" data-toggle="tab">Learn More</a></li>
-                </ul>
-
-                <div class="tab-content">
-                  <div class="tab-pane active" id="signupTab">
-                          <form class="main form-horizontal well" >
-                              <div class="alert alert-message error" style="display: none;">
-                                  <p><strong>Errors!</strong> Change the following.</p>
-                                  <ul>
-
-                                  </ul>
-                              </div>
-
-
-
-                              <fieldset class="control-group">
-                                <label>Space *</label>
-                                <div class="controls">
-                                  <input type="text" name="space" class="span2"/> .garden20.com
-                                  <p class="help-block availablity">&nbsp;</p>
-                                </div>
-                              </fieldset>
-
-
-                              <fieldset class="control-group">
-                                <label>First Name</label>
-                                <div class="controls">
-                                  <input type="text" name="first_name"/>
-                                </div>
-                              </fieldset>
-
-                              <fieldset class="control-group">
-                                <label>Last Name</label>
-                                <div class="controls">
-                                  <input type="text" name="last_name"/>
-                                </div>
-                              </fieldset>
-
-                              <fieldset class="control-group">
-                                <label>Email *</label>
-                                <div class="controls">
-                                  <input type="text" name="email"/>
-                                </div>
-                              </fieldset>
-
-                              <fieldset class="control-group">
-                                <label>Password *</label>
-                                <div class="controls">
-                                  <input type="password" name="password"/>
-                                </div>
-                              </fieldset>
-                              <fieldset class="control-group">
-                                <label>Confirm Password *</label>
-                                <div class="controls">
-                                  <input type="password" name="confirm_password"/>
-                                </div>
-                              </fieldset>
-
-                              <fieldset class="form-actions start-install">
-                                <button class="btn success go-button">Create your Garden!</button>
-                              </fieldset>
-
-                              <div class="install-info" style="display: none;">
-                                  <div class="progress info striped active"  >
-                                    <div class="bar" style="width: 10%;"></div>
-                                  </div>
-                                  <h4>Please wait..</h4>
-                              </div>
-                          </form>
-                          <form class="second install-complete" action="/_session" method="POST"  style="display: none;">
-
-                              <input type="hidden" name="name" />
-                              <input type="hidden" name="password" />
-
-                              <fieldset class="form-actions " >
-                                  <button type="submit" class="btn success" >Open Dashboard</button>
-                              </fieldset>
-                          </form>
-                  </div>
-                  <div class="tab-pane" id="learnMoreTab">
-                      <div class="garden-info">
-                          Well, we don't have much more to tell you at this point. But just sign up and see how cool it
-                          is to run apps you choose in a private cloud space. It gets better when you know you can
-                          run these apps offline on all your devices, and have them sync together.
-                      </div>
-
-                  </div>
-                </div>
-
-
-
-
-            </div>
-            <div class="offset1 span3">
-
-                <div class="featuredApp">
-                    <h4>Featured App</h4>
-                    <img src="static/img/promo_small.png" alt="Kanso Wiki">
-                    <div class="caption">
-                      <h5>Kanso Wiki</h5>
-                      <p>Put a wiki in your garden.</p>
-                    </div>
-                </div>
-            </div>
+            <span class="poke">
+                <span>Get Started </span><i class="icon-hand-right"></i>
+            </span>
+            <a href="/apps" class="btn btn-large btn-primary">Browse Apps</a>
+            <span class="poke"> or </span>
+            <a href="/plant" class="btn btn-large">Plant A Garden</a>
         </div>
-
 
     </div>
