@@ -11,13 +11,7 @@ var gravatar = require('gravatar');
 
 $(function() {
 
-    //
-    setTimeout(function(){
-        //$('.spy-on-me').scrollspy();
-        $('[data-spy="scroll"]').each(function () {
-            var $spy = $('.spy-on-me').scrollspy('refresh')
-        });
-    }, 1400);
+
 
 
 
