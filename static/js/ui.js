@@ -11,12 +11,13 @@ var gravatar = require('gravatar');
 
 $(function() {
 
-    $('.spy-on-me').scrollspy();
+    //
     setTimeout(function(){
+        //$('.spy-on-me').scrollspy();
         $('[data-spy="scroll"]').each(function () {
-            var $spy = $(this).scrollspy('refresh')
+            var $spy = $('.spy-on-me').scrollspy('refresh')
         });
-    }, 200);
+    }, 1400);
 
 
 
