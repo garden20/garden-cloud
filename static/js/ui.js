@@ -11,6 +11,16 @@ var gravatar = require('gravatar');
 
 $(function() {
 
+    $('.spy-on-me').scrollspy();
+    setTimeout(function(){
+        $('[data-spy="scroll"]').each(function () {
+            var $spy = $(this).scrollspy('refresh')
+        });
+    }, 200);
+
+
+
+
 
   var email = amplify.store('email');
   if (email) {

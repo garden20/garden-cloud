@@ -32,6 +32,7 @@
 }
 
 .lead {
+    margin-top: 35px;
     text-align: center;
     margin-bottom: 0;
 }
@@ -41,7 +42,7 @@
     margin-left: auto;
     margin-right: auto;
     margin-top: 40px;
-    margin-bottom: 15px;
+    margin-bottom: 45px;
 }
 
 .features img {
@@ -53,7 +54,7 @@
 }
 
 .call-to-action {
-    margin-bottom: 60px;
+    margin-bottom: 50px;
 }
 
 .call-to-action .inner {
@@ -97,15 +98,57 @@
     margin-right: auto;
 }
 
-.affix.nav {
+/* this makes the page less jumpy on an affix */
+.affix.banner + .lead {
+    margin-top: 80px; // 35 + 45
+}
+
+.sub-header {
+
+    background-color: white;
+    border-bottom: 2px solid #ccc;
+}
+
+.sub-header .row > div {
+    margin-top: 10px;
+}
+
+.sub-header .span2 {
+    font-size: 20px;
+    text-align: right;
+    padding-top: 6px;
+}
+
+.sub-header .row .nav {
+    margin-bottom: 10px !important;
+}
+
+
+.affix.sub-header {
     position: fixed;
-    width: 940px;
+    top: 45px;
+    left: 0px;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
-    top: 45px;
-
+    z-index: 100;
 }
 
 .below-fold {
-    background: url("white_bed_sheet.png") repeat;
+    background: url("grey.png") repeat;
+}
+
+/* this makes the page less jumpy on an affix */
+.affix.sub-header + .below-fold {
+    padding-top: 65px;
+}
+
+/* this helps fix the navigation */
+.below-fold section:before {
+
+      content:"";
+      display:block;
+      height:85px; /* fixed header height*/
+      margin:-85px 0 0; /* negative fixed header height */
+
 }
