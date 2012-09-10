@@ -85,7 +85,6 @@ $(function() {
 
   $('form.main input[name="space"]').live('change', function() {
       var space = $(this).val();
-      
 
       if (space) {
           availablity.text('Checking availablity...');
@@ -103,8 +102,11 @@ $(function() {
                     //console.log('available')
                 },
                 complete: function(xhr, data) {
-                    if (xhr.status == 0)
-                        available(true)
+                    if (xhr.status == 0) {
+                        available(true);
+                        $('.space_name').text(space);
+                    }
+
                     else
                         available(false)
                 }
@@ -257,6 +259,7 @@ $(function() {
       return false;
   })
 
+    $('.tt').tooltip();
 
 });
 

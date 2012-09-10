@@ -1,0 +1,195 @@
+<script type="text/javascript" src="static/js/get.js" ></script>
+
+
+<div class="container" id="top">
+    <div class="row jumbotron">
+        <div class="span12">
+            <div class="banner banner-top">
+                <a href="./">
+                    <img src="static/img/garden20-jumbotron-top.png" />
+                </a>
+            </div>
+            <div class="banner banner-bottom" >
+                    <h2>Get a Garden</h2>
+            </div>
+
+            <div class="platforms">
+                Quick Links: &rarr;
+                <a href="#cloud"    class="tt" title="Garden in the Cloud" ><img src="static/img/platforms/cloud-64.png"/></a>
+                <a href="#osx"      class="tt" title="OSX" ><img src="static/img/platforms/apple-64.png"  /></a>
+                <a href="#win"      class="tt" title="Windows"><img src="static/img/platforms/windows-64.png" /></a>
+                <a href="#linux"    class="tt" title="Linux"><img src="static/img/platforms/linux-64.png" /></a>
+                <a href="#android"  class="tt" title="Android"><img src="static/img/platforms/android-64.png" /></a>
+            </div>
+        </div>
+    </div>
+    <div id="cloud" class="platform">
+        <div class="row header">
+                <img src="static/img/platforms/cloud-64.png" />
+                <span class="type">Garden in the Cloud</span>
+        </div>
+        <div class="row">
+            <div class="span7">
+                <form class="main form form-horizontal" >
+                    <div class="alert alert-message error" style="display: none;">
+                        <p><strong>Errors!</strong> Change the following.</p>
+                        <ul>
+
+                        </ul>
+                    </div>
+
+
+                    <div class="control-group">
+                      <label class="control-label" for="space">Space *</label>
+                      <div class="controls">
+                          <input type="text" name="space" class="span2"/> .garden20.com
+                          <p class="help-block availablity">&nbsp;</p>
+                      </div>
+                    </div>
+
+                    <div class="control-group">
+                      <label class="control-label" for="first_name">First Name</label>
+                      <div class="controls">
+                          <input type="text" name="first_name"/>
+                      </div>
+                    </div>
+
+                    <div class="control-group">
+                      <label class="control-label" for="last_name">Last Name</label>
+                      <div class="controls">
+                          <input type="text" name="last_name"/>
+                      </div>
+                    </div>
+
+                    <div class="control-group">
+                      <label class="control-label" for="email">Email *</label>
+                      <div class="controls">
+                          <input type="text" name="email"/>
+                      </div>
+                    </div>
+
+                    <div class="control-group">
+                      <label class="control-label" for="password">Password *</label>
+                      <div class="controls">
+                          <input type="password" name="password"/>
+                      </div>
+                    </div>
+
+                    <div class="control-group">
+                      <label class="control-label" for="confirm_password">Confirm Password *</label>
+                      <div class="controls">
+                          <input type="password" name="confirm_password"/>
+                      </div>
+                    </div>
+
+
+                    <fieldset class="form-actions start-install">
+                      <button class="btn btn-primary success go-button">Create your Garden!</button>
+                    </fieldset>
+
+                    <div class="install-info" style="display: none;">
+                        <div class="progress info striped active"  >
+                          <div class="bar" style="width: 10%;"></div>
+                        </div>
+                        <h4>Please wait..</h4>
+                    </div>
+                </form>
+                <form class="second install-complete" action="/_session" method="POST"  style="display: none;">
+
+                    <input type="hidden" name="name" />
+                    <input type="hidden" name="password" />
+
+                    <fieldset class="form-actions " >
+                        <button type="submit" class="btn success" >Open Garden</button>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="span3 offset1 infobox">
+                <p>
+                    Create an online garden by signing up with Garden20. You will be provisioned your own hosted space.
+                </p>
+                <p>
+                    Your garden is completely private, and is hosted on <a href="http://iriscouch.com">IrisCouch</a>. They have a solid
+                    policy regarding your data, which you can read about <a href="http://www.iriscouch.com/policy">here</a>.
+                </p>
+
+
+
+            </div>
+
+        </div>
+    </div>
+
+    <div id="osx" class="platform">
+        <div class="row header">
+                <img src="static/img/platforms/apple-64.png" />
+                <span class="type">Garden for OSX</span>
+        </div>
+        <div class="row">
+            <div class="span5 offset1">
+                <a class="btn btn-primary" href="https://github.com/downloads/garden20/garden-for-osx/garden_for_osx-20120614.zip">Download</a> Version 20120614.
+                <p>
+
+                    <ol>
+                        <li>Unzip the download</li>
+                        <li>Copy Garden.app to Applications.</li>
+                        <li>Run it!</li>
+                    </ol>
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="win" class="platform">
+        <div class="row header">
+                <img src="static/img/platforms/windows-64.png" />
+                <span class="type">Garden for Windows</span>
+        </div>
+        <div class="row">
+            <div class="span5 offset1">
+                <p>
+                    <span class="label">Coming Soon</span> <a href="http://twitter.com/garden20_">Follow Us</a> for updates.
+                </p>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div id="linux" class="platform">
+        <div class="row header">
+                <img src="static/img/platforms/linux-64.png" />
+                <span class="type">Garden for Linux</span>
+        </div>
+        <div class="row">
+            <div class="span5 offset1">
+                <p>
+                    We dont currently have an an install for linux. But you can follow these steps to get a garden:
+                    <ol>
+                        <li><a href="https://github.com/iriscouch/build-couchdb">Build CouchDB 1.2 or later</a></li>
+                        <li><a href="http://kan.so/docs/Setting_Up_A_Garden">Convert it to a garden.</a></li>
+                    </ol>
+                </p>
+            </div>
+
+        </div>
+    </div>
+    <div id="android" class="platform">
+        <div class="row header">
+                <img src="static/img/platforms/android-64.png" />
+                <span class="type">Garden for Android</span>
+        </div>
+        <div class="row">
+            <div class="span5 offset1">
+                <a class="btn btn-primary" href="https://github.com/downloads/garden20/garden-for-android/Garden-Android.apk">Download</a> Version 20120829
+                <p>
+                    You must enable 3rd party applications in your android settings to run this. We will be putting this into the Google Play Market shortly.
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="trailer-space">&nbsp;</div>
+</div>
