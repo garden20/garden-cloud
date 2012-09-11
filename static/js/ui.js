@@ -216,7 +216,9 @@ $(function() {
           type : 'request',
           start : new Date().getTime()
       }
-
+      if (app_url) {
+          monitor_doc.app_url = app_url;
+      }
 
 
       current_db.saveDoc(monitor_doc, function(err, resp) {
