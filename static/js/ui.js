@@ -213,7 +213,8 @@ $(function() {
 
       var monitor_doc = {
           _id : details.gravitar_hash,
-          type : 'request'
+          type : 'request',
+          start : new Date().getTime()
       }
 
 
