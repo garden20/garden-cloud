@@ -7,6 +7,8 @@ var current_db = couch.use('./_db');
 var session = require('session');
 var sha1 = require('sha1');
 var gravatar = require('gravatar');
+var users = require('users');
+var session = require('session');
 
 
 $(function() {
@@ -53,24 +55,24 @@ $(function() {
             return true;
         }
         if (action === 'UNSET') {
+            var me = $(this);
             try {
-                var me = $(this);
-                // find the user
-                var details = {
-                    name: $('form.login input[name="name"]').val(),
-                    password: $('form.login input[name="password"]').val()
-                }
-                var id = gravatar.hash(details.name);
-                current_db.getDoc(id, function(err, doc) {
+                var username = $('form.login input[name="name"]').val();
+                var pw = $('form.login input[name="password"]').val();
+                session.login(username, pw, function (err, response) {
                     if (err) return alert('invalid user/password');
+                    // get the current user doc
+                    users.get(username, function (err, doc) {
+                        if (err) return alert(err);
+                        var url = generateGardenLink();
+                        var session_url = 'http://' + doc.space + '.garden20.com/_session?next=' + url;
+                        me.attr('action', session_url);
+                        me.submit();
 
-                    var url = generateGardenLink();
-                    var session_url = 'http://' + doc.space + '.garden20.com/_session?next=' + url;
-                    me.attr('action', session_url);
-                    me.submit();
-
-                    return false;
+                        return false;
+                    });
                 });
+
             } catch (e) {
                 console.log(e);
                 return false;
@@ -133,13 +135,13 @@ $(function() {
 
   }
 
-  function validate(details) {
+  function validate(details, password, confirm_password) {
       var errors = [];
       if (!_.isString(details.email) || details.email === "") errors.push("Please enter an email.");
       if (!_.isString(details.space) || details.space === "") errors.push("Please enter a space.");
-      if (!_.isString(details.password) || details.password === "") errors.push("Please enter a password.");
-      if (!_.isString(details.confirm_password) || details.confirm_password === "") errors.push("Please confirm your password.");
-      if (details.password !== details.confirm_password) errors.push("Passwords dont match");
+      if (!_.isString(password) || password === "") errors.push("Please enter a password.");
+      if (!_.isString(confirm_password) || confirm_password === "") errors.push("Please confirm your password.");
+      if (password !== confirm_password) errors.push("Passwords dont match");
       return errors;
   }
 
@@ -182,80 +184,64 @@ $(function() {
 
   $('form.main').live('submit', function() {
       var app_url = $('.app_info').data('app_url');
+
+      var pw = $('form.main input[name="password"]').val();
+      var cpw = $('form.main input[name="confirm_password"]').val();
+      var email = $('form.main input[name="email"]').val();
+
       var details = {
           space: $('form.main input[name="space"]').val(),
           first_name: $('form.main input[name="first_name"]').val(),
           last_name: $('form.main input[name="last_name"]').val(),
-          email: $('form.main input[name="email"]').val(),
-          password: $('form.main input[name="password"]').val(),
-          confirm_password: $('form.main input[name="confirm_password"]').val()
+          email: email
       }
-      details.type = 'request';
+      details.subtype = 'request';
       details.start = new Date().getTime();
       if (app_url) {
           details.app_url = app_url;
       }
 
-
-      // we use the gravatar hash as the id. This prevents a reuse of a email
-      details._id = gravatar.hash(details.email);
+      details.gravitar_hash = gravatar.hash(details.email);
 
 
 
-      var errors = validate(details);
+      var errors = validate(details, pw, cpw);
       if (errors.length > 0) {
           showSignupErrors(errors);
           return false;
       }
 
+      var monitor_doc = {
+          _id : details.gravitar_hash,
+          type : 'request'
+      }
 
 
+      users.create(email, pw, details, function(err){
+          if (err) {
+              console.log(err);
+              return showSignupErrors('This email address has been used');
+          }
+          current_db.saveDoc(monitor_doc, function(err, resp) {
+              $('.start-install').hide();
+              $('.install-info').show();
+              current_db.changes({
+                  filter : 'garden20/signupProgress',
+                  include_docs : true,
+                  id : monitor_doc._id
+              }, function(err, resp) {
+
+                  if (err) return console.log('error in changes: ' + err);
 
 
-       current_db.newUUID(100, function (err, uuid) {
-            if (err) {
-                return showSignupErrors(err);
-            }
-            details.salt = uuid;
-            details.password_sha = sha1.hex(details.password + details.salt);
-            delete details.password;
-            delete details.confirm_password;
-
-            current_db.saveDoc(details, function(err, resp) {
-                
-
-                if (err) {
-                    return showSignupErrors('This email address has been used');
-                }
+                  var progress = resp.results[0].doc;
+                  showProgress(progress, details);
 
 
-                $('.start-install').hide();
-                $('.install-info').show();
+              });
+          });
 
-
-
-                current_db.changes({
-                    filter : 'garden20/signupProgress',
-                    include_docs : true,
-                    id : resp.id
-                }, function(err, resp) {
-
-                    if (err) return console.log('error in changes: ' + err);
-
-
-                    var progress = resp.results[0].doc;
-                    showProgress(progress, details);
-
-
-                });
-
-
-            });
-        });
-
-
-
-
+      });
       return false;
   })
 

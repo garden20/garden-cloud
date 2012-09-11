@@ -32,6 +32,7 @@
         "duality-contrib-session-hb": ">=0.0.2",
         "users" : null,
         "gravatar" : null,
-        "dashboard-core" : null
+        "dashboard-core" : null,
+        "session" : null
     }
 }
