@@ -1,142 +1,151 @@
-<div id="secondbar" class="app_details">
-  <div class="container">
-    <div class="row app_info" data-app_url="{{app_url}}">
-      <div class="span2">
-        <img class="app_icon" src="{{baseURL}}/_db/{{id}}/{{icon_96}}" width="96" />
-      </div>
-      <div class="span9">
-        <h1 class="app_title">{{title}}</h1>
-        <span class="author">
-          By <a href="#" class="uploaded_by"></a>
-        </span>
-        <span class="updated">
-          Updated <span class="readable"></span>
-        </span>
-
-      </div>
-    </div>
-  </div>
-</div>
 <div class="container bottom-space">
-  <div id="content">
-
-
-
-    <div class="wizard_trail first">
-        <h2>Installation Location</h2>
-        <div class="step-info">
-            <div class="icon-holder">
-                <img src="../static/img/garden20.png" alt="" />
-                <div class="type">Hosted</div>
-            </div>
-            <div class="step-description">
-                Garden20
-            </div>
-        </div>
-    </div>
-
-    <div class="row welcome">
-        <div class="span12">
-            <h3>Welcome to Garden20!</h3>
-            <p>Easy hosting for your apps, <a href="">more info.</a> Please login or signup.</p>
-        </div>
-    </div>
     <div class="row">
-
-        <div class="span6 ">
-            <form class="main form-horizontal well" >
-              <h3>Sign Up</h3>
-              <div class="alert alert-message error" style="display: none;">
-                  <p><strong>Errors!</strong> Change the following.</p>
-                  <ul>
-                  </ul>
-              </div>
-              <fieldset class="control-group">
-                <label>Space *</label>
-                <div class="controls">
-                  <input type="text" name="space" class="span2"/> .garden20.com
-                  <p class="help-block availablity">&nbsp;</p>
-                </div>
-              </fieldset>
+      <div class="span4">
+        <div class="market-icon">
+            <a href="{{baseURL}}"><img src="{{baseURL}}/static/img/market-logo.png"/></a>
+        </div>
+      </div>
+      <div class="span10">
 
 
-              <fieldset class="control-group">
-                <label>First Name</label>
-                <div class="controls">
-                  <input type="text" name="first_name"/>
-                </div>
-              </fieldset>
+      </div>
+    </div>
+    <div class="row app_top">
+      <div id="details_sidebar" class="span4" data-hosted="{{hosted}}" class="app_info" data-appurl="{{app_url}}">
 
-              <fieldset class="control-group">
-                <label>Last Name</label>
-                <div class="controls">
-                  <input type="text" name="last_name"/>
-                </div>
-              </fieldset>
 
-              <fieldset class="control-group">
-                <label>Email *</label>
-                <div class="controls">
-                  <input type="text" name="email"/>
-                </div>
-              </fieldset>
+      </div>
 
-              <fieldset class="control-group">
-                <label>Password *</label>
-                <div class="controls">
-                  <input type="password" name="password"/>
-                </div>
-              </fieldset>
-              <fieldset class="control-group">
-                <label>Confirm Password *</label>
-                <div class="controls">
-                  <input type="password" name="confirm_password"/>
-                </div>
-              </fieldset>
+      <div class="span8 install_where" data-host_options="{{host_options}}">
 
-              <fieldset class="form-actions start-install">
-                <button class="btn success go-button">Sign Up!</button>
-              </fieldset>
+          <h1>2a. Signup/Login</h1>
+          <p class="hook">
+              Thanks for choosing Garden20 to host your app. Please sign-up or login.
+          </p>
+          <ul class="nav nav-tabs">
+            <li class="active">
+              <a href="#signup"  data-toggle="tab">Signup</a>
+            </li>
+            <li><a href="#login"  data-toggle="tab">Login</a></li>
+          </ul>
+          <div class="tab-content">
+              <div class="tab-pane active" id="signup">
 
-              <div class="install-info" style="display: none;">
-                  <div class="progress info striped active"  >
-                    <div class="bar" style="width: 10%;"></div>
+                  <div class="row">
+                      <div class="span 6">
+                          <form class="main form-horizontal " >
+                              <div class="alert alert-message error" style="display: none;">
+                                 <p><strong>Errors!</strong> Change the following.</p>
+                                 <ul>
+
+                                 </ul>
+                             </div>
+
+
+                             <div class="control-group">
+                               <label class="control-label" for="space">Space *</label>
+                               <div class="controls">
+                                   <input type="text" name="space" class="span2"/> .garden20.com
+                                   <p class="help-block availablity">&nbsp;</p>
+                               </div>
+                             </div>
+
+                             <div class="control-group">
+                               <label class="control-label" for="first_name">First Name</label>
+                               <div class="controls">
+                                   <input type="text" name="first_name"/>
+                               </div>
+                             </div>
+
+                             <div class="control-group">
+                               <label class="control-label" for="last_name">Last Name</label>
+                               <div class="controls">
+                                   <input type="text" name="last_name"/>
+                               </div>
+                             </div>
+
+                             <div class="control-group">
+                               <label class="control-label" for="email">Email *</label>
+                               <div class="controls">
+                                   <input type="text" name="email"/>
+                               </div>
+                             </div>
+
+                             <div class="control-group">
+                               <label class="control-label" for="password">Password *</label>
+                               <div class="controls">
+                                   <input type="password" name="password"/>
+                               </div>
+                             </div>
+
+                             <div class="control-group">
+                               <label class="control-label" for="confirm_password">Confirm Password *</label>
+                               <div class="controls">
+                                   <input type="password" name="confirm_password"/>
+                               </div>
+                             </div>
+
+
+                             <fieldset class="form-actions start-install light">
+                                <a href="{{app_url}}/install">Prev</a>
+                               <button class="btn btn-primary success go-button">Sign Up</button>
+                             </fieldset>
+
+                             <div class="install-info" style="display: none;">
+                                 <div class="progress info striped active"  >
+                                   <div class="bar" style="width: 10%;"></div>
+                                 </div>
+                                 <h4>Please wait..</h4>
+                             </div>
+                          </form>
+                         <form class="second install-complete" action="/_session" method="POST"  style="display: none;">
+
+                             <input type="hidden" name="name" />
+                             <input type="hidden" name="password" />
+
+                             <fieldset class="form-actions " >
+                                 <button type="submit" class="btn btn-primary" >Next</button>
+                             </fieldset>
+                         </form>
+                      </div>
+                      <div class="span2 infobox">
+                          <p>
+                              Create an online garden by signing up with Garden20. You will be provisioned your own hosted space.
+                          </p>
+                          <p>
+                              Your garden is completely private, and is hosted on <a href="http://iriscouch.com">IrisCouch</a>. They have a solid
+                              policy regarding your data, which you can read about <a href="http://www.iriscouch.com/policy">here</a>.
+                          </p>
+                      </div>
                   </div>
-                  <h4>Please wait..</h4>
+
+
               </div>
-            </form>
-            <form class="second install-complete" action="/_session" method="POST"  style="display: none;">
+              <div class="tab-pane" id="login">
+                  <form class="form-horizontal login" method="POST" action="UNSET">
+                    <div class="control-group">
+                        <label class="control-label" for="name">Email *</label>
+                        <div class="controls">
+                            <input type="text" name="name"/>
+                        </div>
+                    </div>
 
-                <input type="hidden" name="name" />
-                <input type="hidden" name="password" />
+                    <div class="control-group">
+                      <label class="control-label" for="password">Password *</label>
+                      <div class="controls">
+                          <input type="password" name="password"/>
+                      </div>
+                    </div>
 
-                <fieldset class="form-actions " >
-                    <button type="submit" class="btn success" >Next</button>
-                </fieldset>
-            </form>
-        </div>
-        <div class="span6">
-            <form class="form-horizontal well login" method="POST" action="UNSET">
-              <h3>Login</h3>
-              <fieldset class="control-group">
-                <label>Email *</label>
-                <div class="controls">
-                  <input type="text" name="name"/>
-                </div>
-              </fieldset>
-              <fieldset class="control-group">
-                <label>Password *</label>
-                <div class="controls">
-                  <input type="password" name="password"/>
-                </div>
-              </fieldset>
-              <fieldset class="form-actions">
-                <button  class="btn success" >Login</button>
-              </fieldset>
-            </form>
-        </div>
+                    <fieldset class="form-actions light">
+                      <a href="{{app_url}}/install">Prev</a>
+                      <button  class="btn btn-primary" >Login</button>
+                    </fieldset>
+                  </form>
+              </div>
+          </div>
+      </div>
     </div>
 
-  </div>
 </div>
 <script type="text/javascript" src="static/js/install.js"></script>

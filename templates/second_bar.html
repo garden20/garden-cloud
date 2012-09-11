@@ -1,0 +1,17 @@
+<img src="{{meta.icon_url}}" width="96" style="float: left"/>
+<h2>{{meta.kanso.config.name}}</h2>
+<div class="author">
+    By <a href="{{meta.user_url}}">{{meta.user}}</a>
+</div>
+<div style="clear: both"></div>
+
+<h4>{{meta.kanso.config.description}}</h4>
+<div class="install_msg"></div>
+<ol>
+    <li><a href="{{meta.src}}/install">Select Installation Location</a>
+          <ol class="sub">
+              <li><span class="{{#unless hosted}}local{{/unless}} current">Signup/Login</span></li>
+          </ol>
+    </li>
+    <li>Confirm And Complete</li>
+</ol>

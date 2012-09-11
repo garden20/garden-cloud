@@ -259,7 +259,7 @@ $(function() {
       return false;
   })
 
-    $('.tt').tooltip();
+   // $('.tt').tooltip();
 
 });
 
