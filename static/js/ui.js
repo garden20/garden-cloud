@@ -219,7 +219,9 @@ $(function() {
 
       users.create(email, pw, details, function(err){
           if (err) {
-              console.log(err);
+              //console.log(err);
+              // might want to check err.error == 'conflict';
+
               return showSignupErrors('This email address has been used');
           }
           current_db.saveDoc(monitor_doc, function(err, resp) {

@@ -29,29 +29,47 @@ require('http').createServer(function (req, res) {
 }).listen(1337);
 
 var src_db_root = process.env['SRC_COUCH_ROOT'];
+var src_user_db = src_db_root + '/_users';
 var src_db = src_db_root + '/garden20';
 var dst_db = process.env['DST_COUCH_ROOT'] + '/hosting_public';
 var hosting_root = process.env['HOSTING_ROOT'];
 
 console.log('starting...');
 
-follow({db: src_db, include_docs: true, filter: "garden20/newRequest", since : "now"}, function(error, change) {
+follow({db: src_user_db, include_docs: true,  since : "now"}, function(error, change) {
     if (error || !("doc" in change)) return;
-    var doc = change.doc;
+    var user_doc = change.doc;
+
+    if (!user_doc.subtype === 'request') return;
+
 
     console.log('got a doc change');
 
-    if (doc.state || doc.in_progress) return;
 
-    var domain = domainPrefix(doc);
+
+    var domain = domainPrefix(user_doc);
     var fullDomain = domain + '.' + hosting_root;
-    var targetDoc = createTargetDoc(doc, domain);
+    var targetDoc = createTargetDoc(user_doc, domain);
     var start_time = new Date().getTime();
 
-    doc.start_time = start_time;
+    user_doc.start_time = start_time;
 
+    var doc = null;
 
     async.waterfall([
+
+        function(callback) {
+            get_status_doc(src_db, user_doc.gravitar_hash, function(err, resp){
+                if (err) return callback(err);
+                doc = resp;
+                if (doc.state || doc.in_progress) return callback('already processed');
+                updateProgress(src_db, doc, 'Starting Progress...', 10, false, function(err2, doc2) {
+                    doc = doc2;
+                    callback(null, doc);
+                });
+
+            });
+        },
         function(callback){
             createCouchPost(dst_db, targetDoc, function(err){
                 updateProgress(src_db, doc, 'Creating space...', 15, false, function(err2, doc2) {
@@ -198,6 +216,18 @@ function waitForCouch(fullDomain, callback) {
    );
 }
 
+
+function get_status_doc(src_db, _id, callback) {
+    request({
+      uri: src_db + '/' + _id,
+      method: "GET",
+      json : doc
+    },
+    function (err, resp, body) {
+        if (err) callback('ahh!! ' + err);
+        callback(null, body);
+    })
+}
 
 function installDashboard(src_db_root, fullDomain, callback) {
    console.log('install dashboard');
