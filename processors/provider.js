@@ -19,8 +19,9 @@ var follow = require('follow')
   , http = require('http')
   , path = require('path')
   , url = require('url')
-  , _ = require('underscore')
-  ;
+  , _ = require('underscore'),
+    fs = require('fs');
+
 
 // for nodejitsu -- they require a running server
 require('http').createServer(function (req, res) {
@@ -49,6 +50,7 @@ follow({db: src_user_db, include_docs: true,  since : "now"}, function(error, ch
 
     var domain = domainPrefix(user_doc);
     var fullDomain = domain + '.' + hosting_root;
+    console.log(fullDomain);
     var targetDoc = createTargetDoc(user_doc, domain);
     var start_time = new Date().getTime();
 
@@ -90,13 +92,20 @@ follow({db: src_user_db, include_docs: true,  since : "now"}, function(error, ch
         },
         function(callback){
             installDashboard(src_db_root, fullDomain, function(err){
+                updateProgress(src_db, doc, 'Adjusting settings...', 65, false, function(err2, doc2) {
+                    doc = doc2;
+                    callback(err);
+                });
+            });
+        },
+        function(callback){
+            adjust_dashboard_settings(fullDomain, function(err){
                 updateProgress(src_db, doc, 'Creating User...', 70, false, function(err2, doc2) {
                     doc = doc2;
                     callback(err);
                 });
             });
         },
-
         function(callback) {
             createUser(fullDomain, user_doc.email, user_doc.password_sha, user_doc.salt, function(err){
                 updateProgress(src_db, doc, 'Admin config...', 80, false, function(err2, doc2) {
@@ -203,7 +212,7 @@ function waitForCouch(fullDomain, callback) {
                 checkExistenceOf('http://' + fullDomain, function(err, resp){
                     var now = new Date().getTime();
                     var elapsed = now - start;
-                    if (elapsed > 20000) callback('Timeout, waiting for couch');
+                    if (elapsed > 20000) return callback('Timeout, waiting for couch');
                     if (resp && resp.statusCode === 200 ) couchNotUp = false;
                     // prob should be kind and do a settimeout
                     callback();
@@ -382,5 +391,70 @@ function checkExistenceOf(url, callback) {
 
 
 
+function adjust_dashboard_settings(fullDomain, callback){
+    var dashboard_db = require('nano')('http://' + fullDomain + '/dashboard');
+
+    dashboard_db.attachment.get('_design/dashboard', 'rabbit.png', function(err, body) {
+      if (!err) {
+        fs.writeFile('rabbit.png', body);
+      }
+    });
+
+
+    // this sucks, should not have to duplicate this.
+    var settings = {
+        _id: 'settings',
+        frontpage : {
+            use_markdown : true,
+            use_html : false,
+            show_activity_feed : false,
+            markdown : "## Welcome to your Garden\n\nHere are some things you might want to do:\n\n- [Configure](./settings#/frontpage) this front page.\n- [Install](./install) some apps.\n\n"
+        },
+        host_options : {
+            short_urls : true,
+            hostnames : 'http://localhost:5984,http://' + fullDomain,
+            short_app_urls : true,
+            rootDashboard : true,
+            hosted : true,
+            login_type : 'local'
+        },
+        top_nav_bar : {
+            bg_color : '#1D1D1D',
+            link_color : '#BFBFBF',
+            active_link_color : '#FFFFFF',
+            active_link_bg_color : '#000000',
+            active_bar_color : '#bd0000',
+            show_brand: true,
+            icon_name: "garden-24.png",
+            brand_link: "http://garden20.com",
+            show_gravatar : true,
+            show_username : true,
+            notification_theme: 'libnotify',
+            admin_show_futon : false
+        },
+        sessions : {
+            type : 'internal',
+            internal : {
+                login_type: 'local',
+                redirect_frontpage_on_anon : false
+            },
+            other : {
+                login_url : '/users/_design/users-default/_rewrite/#/login',
+                login_url_next : '/users/_design/users-default/_rewrite/#/login/{next}',
+                signup_url : '/users/_design/users-default/_rewrite/#/signup',
+                profile_url : '/users/_design/users-default/_rewrite/#/profile/{username}'
+            }
+        }
+    }
+
+    dashboard_db.insert(settings, function(err, body){
+        if (err) return callback(err);
+        fs.createReadStream('garden-24.png').pipe(
+            dashboard_db.attachment.insert('settings', 'garden-24.png', null, 'image/png', {rev : body.rev}, function(err){
+                callback(null);
+            })
+        );
+    });
+}
 
 
