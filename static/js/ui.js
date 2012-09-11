@@ -172,7 +172,7 @@ $(function() {
 
   function generateGardenLink() {
       var base = '/';
-      var app_url = $('.app_info').data('app_url');
+      var app_url = $('#details_sidebar').data('appurl');
       if (app_url) {
           base += 'install?app_url=' + app_url;
       }
@@ -183,7 +183,7 @@ $(function() {
 
 
   $('form.main').live('submit', function() {
-      var app_url = $('.app_info').data('app_url');
+      var app_url = $('#details_sidebar').data('appurl');
 
       var pw = $('form.main input[name="password"]').val();
       var cpw = $('form.main input[name="confirm_password"]').val();
