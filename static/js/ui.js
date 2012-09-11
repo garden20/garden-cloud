@@ -217,32 +217,31 @@ $(function() {
       }
 
 
-      users.create(email, pw, details, function(err){
-          if (err) {
+
+      current_db.saveDoc(monitor_doc, function(err, resp) {
+         if(err) {
+             //console.log(err);
+             // might want to check err.error == 'conflict';
+             return showSignupErrors('This email address has been used');
+         }
+         users.create(email, pw, details, function(err){
               //console.log(err);
               // might want to check err.error == 'conflict';
+               if (err) return showSignupErrors('This email address has been used');
+               $('.start-install').hide();
+               $('.install-info').show();
+               current_db.changes({
+                   filter : 'garden20/signupProgress',
+                   include_docs : true,
+                   id : monitor_doc._id
+               }, function(err, resp) {
 
-              return showSignupErrors('This email address has been used');
-          }
-          current_db.saveDoc(monitor_doc, function(err, resp) {
-              $('.start-install').hide();
-              $('.install-info').show();
-              current_db.changes({
-                  filter : 'garden20/signupProgress',
-                  include_docs : true,
-                  id : monitor_doc._id
-              }, function(err, resp) {
+                   if (err) return console.log('error in changes: ' + err);
 
-                  if (err) return console.log('error in changes: ' + err);
-
-
-                  var progress = resp.results[0].doc;
-                  showProgress(progress, details);
-
-
-              });
-          });
-
+                   var progress = resp.results[0].doc;
+                   showProgress(progress, details);
+               });
+         });
       });
       return false;
   })

@@ -62,10 +62,12 @@ follow({db: src_user_db, include_docs: true,  since : "now"}, function(error, ch
             get_status_doc(src_db, user_doc.gravitar_hash, function(err, resp){
                 if (err) return callback(err);
                 doc = resp;
+                console.log(doc);
                 if (doc.state || doc.in_progress) return callback('already processed');
+                if (doc.error) return callback("Something bad happened");
                 updateProgress(src_db, doc, 'Starting Progress...', 10, false, function(err2, doc2) {
                     doc = doc2;
-                    callback(null, doc);
+                    callback(null);
                 });
 
             });
@@ -96,7 +98,7 @@ follow({db: src_user_db, include_docs: true,  since : "now"}, function(error, ch
         },
 
         function(callback) {
-            createUser(fullDomain, doc.email, doc.password_sha, doc.salt, function(err){
+            createUser(fullDomain, user_doc.email, user_doc.password_sha, user_doc.salt, function(err){
                 updateProgress(src_db, doc, 'Admin config...', 80, false, function(err2, doc2) {
                     doc = doc2;
                     callback(err);
@@ -105,7 +107,7 @@ follow({db: src_user_db, include_docs: true,  since : "now"}, function(error, ch
         },
 
         function(callback) {
-            setAdmin(fullDomain, 'dashboard', doc.email, function(err){
+            setAdmin(fullDomain, 'dashboard', user_doc.email, function(err){
                 updateProgress(src_db, doc, 'Adjust routing', 85, false, function(err2, doc2) {
                     doc = doc2;
                     callback(err);
@@ -125,7 +127,7 @@ follow({db: src_user_db, include_docs: true,  since : "now"}, function(error, ch
 
         },
         function(callback) {
-            createAdmin(fullDomain, doc.email, doc.password_sha, doc.salt, function(err){
+            createAdmin(fullDomain, user_doc.email, user_doc.password_sha, user_doc.salt, function(err){
                 updateProgress(src_db, doc, 'Finishing', 95, false, function(err2, doc2) {
                     doc = doc2;
                     callback(err);
@@ -182,7 +184,6 @@ function createCouchPost(url, targetDoc, callback) {
   function (err, resp, body) {
     if (err) callback('ahh!! ' + err);
     var response = body;
-    console.log(response);
     if (!response) response = {"ok": true};
     if (!response.ok) callback(url + " - " + body);
     callback();
@@ -203,7 +204,6 @@ function waitForCouch(fullDomain, callback) {
                     var now = new Date().getTime();
                     var elapsed = now - start;
                     if (elapsed > 20000) callback('Timeout, waiting for couch');
-                    console.log(err, resp);
                     if (resp && resp.statusCode === 200 ) couchNotUp = false;
                     // prob should be kind and do a settimeout
                     callback();
@@ -218,13 +218,14 @@ function waitForCouch(fullDomain, callback) {
 
 
 function get_status_doc(src_db, _id, callback) {
+    var uri = src_db + '/' + _id;
+    console.log(uri);
     request({
-      uri: src_db + '/' + _id,
-      method: "GET",
-      json : doc
+      uri: uri,
+      method: "GET"
     },
     function (err, resp, body) {
-        if (err) callback('ahh!! ' + err);
+        if (err) return callback('ahh!! ' + err);
         callback(null, body);
     })
 }
