@@ -32,7 +32,6 @@ require('http').createServer(function (req, res) {
 var src_db_root = process.env['SRC_COUCH_ROOT'];
 var src_user_db = src_db_root + '/_users';
 var src_db = src_db_root + '/garden20';
-var dashboard_seed_db = src_db_root + '/dashboard_seed';
 
 var dst_db = process.env['DST_COUCH_ROOT'] + '/hosting_public';
 var hosting_root = process.env['HOSTING_ROOT'];
@@ -93,7 +92,7 @@ follow({db: src_user_db, include_docs: true,  since : "now"}, function(error, ch
             });
         },
         function(callback){
-            installDashboard(dashboard_seed_db, fullDomain, function(err){
+            installDashboard(src_db_root, fullDomain, function(err){
                 updateProgress(src_db, doc, 'Adjusting settings...', 65, false, function(err2, doc2) {
                     doc = doc2;
                     callback(err);
@@ -243,7 +242,7 @@ function get_status_doc(src_db, _id, callback) {
 
 function installDashboard(src_db_root, fullDomain, callback) {
    console.log('install dashboard');
-   replicate(src_db_root, 'garden20', 'http://' + fullDomain + '/dashboard', '_design/dashboard', function(err){
+   replicate(src_db_root, 'dashboard_seed', 'http://' + fullDomain + '/dashboard', '_design/dashboard', function(err){
        console.log('replicate cmmd fin');
        console.log(err);
        callback(err)
