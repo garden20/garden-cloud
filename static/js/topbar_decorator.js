@@ -2,7 +2,7 @@ $(function(){
     if ($('#dashboard-topbar').data('ready')) {
         decorate();
     } else {
-        $('#dashboard-topbar').on('ready', decorate);
+        $('#dashboard-topbar').live('ready', decorate);
     }
 
     function decorate() {
