@@ -244,10 +244,27 @@ $(function() {
                    var progress = resp.results[0].doc;
                    showProgress(progress, details);
                });
+               // also login this user!
+              session.login(email, pw, function (err, response) {
+                  // reload the topbar?
+                  // .. must invalidate the cookie
+                  createCookie('last-dashboard-cache', "", -1);
+              });
+
          });
       });
       return false;
   })
+
+    function createCookie(name, value, days) {
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            var expires = "; expires=" + date.toGMTString();
+        }
+        else var expires = "";
+        document.cookie = name + "=" + value + expires + "; path=/";
+    }
 
    // $('.tt').tooltip();
 
