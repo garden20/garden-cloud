@@ -19,8 +19,10 @@ var follow = require('follow')
   , http = require('http')
   , path = require('path')
   , url = require('url')
-  , _ = require('underscore'),
-    fs = require('fs');
+  , _ = require('underscore')
+  ,  fs = require('fs')
+  , Log = require('log')
+  , log = new Log('debug', fs.createWriteStream('g20.log'))
 
 
 // for nodejitsu -- they require a running server
@@ -36,7 +38,7 @@ var src_db = src_db_root + '/garden20';
 var dst_db = process.env['DST_COUCH_ROOT'] + '/hosting_public';
 var hosting_root = process.env['HOSTING_ROOT'];
 
-console.log('starting...');
+log.debug('starting...');
 
 follow({db: src_user_db, include_docs: true,  since : "now"}, function(error, change) {
     if (error || !("doc" in change)) return;
@@ -45,13 +47,13 @@ follow({db: src_user_db, include_docs: true,  since : "now"}, function(error, ch
     if (!user_doc.subtype === 'request') return;
 
 
-    console.log('got a doc change');
+    log.debug('got a doc change');
 
 
 
     var domain = domainPrefix(user_doc);
     var fullDomain = domain + '.' + hosting_root;
-    console.log(fullDomain);
+    log.debug('requested domain: ' + fullDomain);
     var targetDoc = createTargetDoc(user_doc, domain);
     var start_time = new Date().getTime();
 
@@ -65,7 +67,7 @@ follow({db: src_user_db, include_docs: true,  since : "now"}, function(error, ch
             get_status_doc(src_db, user_doc.gravitar_hash, function(err, resp){
                 if (err) return callback(err);
                 doc = resp;
-                console.log(doc);
+                log.debug(doc);
                 if (doc.state || doc.in_progress) return callback('already processed');
                 if (doc.error) return callback("Something bad happened");
                 updateProgress(src_db, doc, 'Starting Progress...', 10, false, function(err2, doc2) {
@@ -150,7 +152,7 @@ follow({db: src_user_db, include_docs: true,  since : "now"}, function(error, ch
 
 
     ], function(err) {
-        if (err) return console.log('workflow problem:  ' + JSON.stringify(err));
+        if (err) return log.error('workflow problem:  ' + JSON.stringify(err));
     });
 })
 
@@ -185,7 +187,7 @@ function updateProgress(src_db, doc, state, percent, finished, callback) {
 
 
 function createCouchPost(url, targetDoc, callback) {
-  console.log('create couch', url);
+  log.debug('create couch', url);
   request({
       uri: url,
       method: "POST",
@@ -203,7 +205,7 @@ function createCouchPost(url, targetDoc, callback) {
 
 
 function waitForCouch(fullDomain, callback) {
-  console.log('wait for couch');
+  log.debug('wait for couch');
   var couchNotUp = true;
   var start = new Date().getTime();
   async.whilst(
@@ -229,7 +231,7 @@ function waitForCouch(fullDomain, callback) {
 
 function get_status_doc(src_db, _id, callback) {
     var uri = src_db + '/' + _id;
-    console.log(uri);
+    log.debug(uri);
     request({
       uri: uri,
       method: "GET"
@@ -241,10 +243,10 @@ function get_status_doc(src_db, _id, callback) {
 }
 
 function installDashboard(src_db_root, fullDomain, callback) {
-   console.log('install dashboard');
+   log.debug('install dashboard into ' + fullDomain);
    replicate(src_db_root, 'dashboard_seed', 'http://' + fullDomain + '/dashboard', '_design/dashboard', function(err){
-       console.log('replicate cmmd fin');
-       console.log(err);
+       log.debug('replicate cmmd finished');
+       if (err) log.error(err);
        callback(err)
    });
 }
@@ -333,8 +335,8 @@ function addVhosts(fullDomain, callback) {
         // make sure the dashboard can be reached directly
         url = url + '%2Fdashboard';
         path = JSON.stringify('/dashboard');
-        console.log(url);
-        console.log(path);
+        log.debug('adding vhosts to ' + url);
+        log.debug(path);
         request({uri: url, method: "PUT", body: path}, function (err, resp, body) {
            if (err) callback('ahh!! ' + err);
            callback();
@@ -382,7 +384,7 @@ function replicate(couch, source, target, ddoc, callback) {
 }
 
 function checkExistenceOf(url, callback) {
-  console.log('check existance', url);
+  log.debug('check existance', url);
   try {
        http.get(url, function(resp) {
           callback(null, resp);
