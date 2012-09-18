@@ -236,7 +236,10 @@ $(function() {
          users.create(email, pw, details, function(err){
               //console.log(err);
               // might want to check err.error == 'conflict';
-               if (err) return showSignupErrors('This email address has been used');
+               if (err) {
+                   if (err.error == 'conflict') return showSignupErrors('This email address has been used');
+                   else return showSignupErrors('There was a problem submitting the request for account');
+               }
                $('.start-install').hide();
                $('.install-info').show();
                current_db.changes({
