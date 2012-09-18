@@ -67,7 +67,7 @@ follow({db: src_user_db, include_docs: true,  since : "now"}, function(error, ch
             get_status_doc(src_db, user_doc.gravitar_hash, function(err, resp){
                 if (err) return callback(err);
                 doc = resp;
-                log.debug(doc);
+                log.debug(JSON.stringify(doc));
                 if (doc.state || doc.in_progress) return callback('already processed');
                 if (doc.error) return callback("Something bad happened");
                 updateProgress(src_db, doc, 'Starting Progress...', 10, false, function(err2, doc2) {
