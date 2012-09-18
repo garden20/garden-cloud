@@ -152,7 +152,10 @@ follow({db: src_user_db, include_docs: true,  since : "now"}, function(error, ch
 
 
     ], function(err) {
-        if (err) return log.error('workflow problem:  ' + JSON.stringify(err));
+        if (err) {
+            updateProgress(src_db, doc, 'Sorry, signup failed. Try again later', -1, true, function(err2, doc2){});
+            return log.error('workflow problem:  ' + JSON.stringify(err));
+        }
     });
 })
 

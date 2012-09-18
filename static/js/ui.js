@@ -147,6 +147,12 @@ $(function() {
 
 
   function showProgress(progress, details) {
+      if (progress.percent < 0) {
+          showSignupErrors(progess.state);
+          $('.install-info .bar').css('width', '100%');
+          $('.install-info .progress').addClass('bar-danger').removeClass('active');
+            return;
+      }
       $('.install-info h4').text(progress.state);
       $('.install-info .bar').css('width', progress.percent + '%');
 
