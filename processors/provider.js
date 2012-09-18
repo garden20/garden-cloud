@@ -194,7 +194,7 @@ function createCouchPost(url, targetDoc, callback) {
       json : targetDoc
   },
   function (err, resp, body) {
-    if (err) callback('ahh!! ' + err);
+    if (err) return callback('ahh!! ' + err);
     var response = body;
     if (!response) response = {"ok": true};
     if (!response.ok) callback(url + " - " + body);
@@ -384,7 +384,7 @@ function replicate(couch, source, target, ddoc, callback) {
 }
 
 function checkExistenceOf(url, callback) {
-  log.debug('check existance', url);
+  log.debug('check existance of' +  url);
   try {
        http.get(url, function(resp) {
           callback(null, resp);
